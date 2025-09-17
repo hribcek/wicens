@@ -412,7 +412,7 @@ F_firmware_check() {
         device_model="$(F_nvram odmpid)"
         lan_addr="$(F_nvram lan_ipaddr)"
         if [ -z "${device_model}" ]; then
-            {device_model}="$(F_nvram productid)"
+            device_model="$(F_nvram productid)"
         fi
 
         case "${build_no}" in
@@ -879,8 +879,9 @@ F_opt_backup_restore() {
             F_terminal_check_fail "Critical error, backup failed, could not output to ${script_backup_file}"
         fi
 
-        if [ "${1}" = 'resetbackup' ];
-            F_terminal_check "Any key to continue..." && read -rsn1
+        if [ "${1}" = 'resetbackup' ]; then
+            F_terminal_check "Any key to continue..."
+            read -rsn1
         fi
     } # backup
 
@@ -1939,9 +1940,7 @@ F_notify_wanip() {
                 F_menu_exit
             fi
             building_settings=1
-            if [ ! F_compare ]; then
-                F_script_wan_update
-            fi
+            ! F_compare && F_script_wan_update
             building_settings=0
             F_replace_var user_wanip_notification 1 "${config_src}"
             F_auto_run createall
@@ -1961,9 +1960,7 @@ F_notify_wanip() {
                     if [ "${user_fw_update_notification}" = 0 ] && [ "${user_reboot_notification}" = 0 ] && [ "${user_update_notification}" = 0 ]; then
                         F_auto_run removeall
                     fi
-                    if [ F_wan_event check ]; then
-                        F_wan_event remove
-                    fi
+                    F_wan_event check && F_wan_event remove
                     F_replace_var user_wanip_notification 0 "${config_src}"
                     user_wanip_notification=0
                     F_log_terminal_ok "Disabled WAN IP Email notification"
@@ -3090,6 +3087,7 @@ F_wanip_email_msg() {
         F_printfstr "To: \"wicens user\" <${user_send_to_addr}>"
         if [ -n "${user_send_to_cc}" ]; then
             F_printfstr "Cc: ${user_send_to_cc}"
+        fi
         
         F_printfstr "Subject: ${wan_subject}"
         F_printfstr "Date: $(F_date r)"
@@ -3747,7 +3745,7 @@ F_internet_check() {
                         ;;
                 esac
 
-                sed '${d}' "${file_line_remove}"
+                sed '$d' "${file_line_remove}"
                 F_log "Removed retry line from ${file_line_remove}"
             fi
 
