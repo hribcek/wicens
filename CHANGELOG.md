@@ -1,5 +1,9 @@
 # wicens change log
 -----------------
+## 4.12
+September 17 2025
+* ADDED: custom script now gets called with parameter as current_wan_ip
+* CHANGED: made code look nice (hope it works, too) 
 ## 4.11
 April 10 2025
 * ADDED: cron fully customizable in wicens_update_conf.wic
