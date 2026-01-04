@@ -3635,7 +3635,7 @@ F_ministun() {
 
 	while [ "$stun_count" -gt 0 ] ; do
 		server_attempt=0
-		while [ "${#server_attempt}" -lt "$stun_list" ] ; do
+		while [ "$server_attempt" -lt "$stun_list" ] ; do
 			server_random="$(F_random_num $stun_list)"
 
 			if ! F_printfstr "$last_random_mini" | grep -Fq "$server_random" ; then
