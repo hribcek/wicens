@@ -246,7 +246,7 @@ F_clean_exit() {
 	printf '\033[?7h'
 
 	# if ctrlc kill any child process put in background (F_time-F_web_update_check)
-	[ "$run_option" = 'interrupt' ] && [ -n "$child_pid" ] && { for pid in $child_pid ; do kill "$child_pid" 2>/dev/null ; done ; }
+	[ "$run_option" = 'interrupt' ] && [ -n "$child_pid" ] && { for pid in $child_pid ; do kill "$pid" 2>/dev/null ; done ; }
 
 	# save last seen uptime
 	F_uptime
@@ -371,7 +371,6 @@ F_firmware_check() {
 
 					*)
 						from_menu=1
-						installer=1
 						F_terminal_header
 						F_log "HI - wicens the WAN IP change EMAIL notification script has been installed"
 						F_printf "[ ${tGRN}HI${tCLR} ] ${tYEL}===== Welcome to wicens the WAN IP change Email notification script =====${tCLR}"
@@ -1468,7 +1467,7 @@ F_opt_subject() {
 				R|r)
 					if F_replace_var "$subject_select" '' "$config_src" ; then
 						F_terminal_check_ok "Custom subject text cleared"
-						eval "$subject_select="
+						eval "$subject_select=\"\""
 					else
 						F_terminal_check_fail "Error, sed failed to clear custom subject text"
 						F_menu_exit
@@ -1741,7 +1740,7 @@ F_notify_firmware() {
 
 			F_replace_var user_fw_update_notification 0 "$config_src"
 			user_fw_update_notification=0
-			[ "$2" != 'un' ] && F_log_terminal_ok "Disabled Firmware update Email notifcation"
+			[ "$2" != 'un' ] && F_log_terminal_ok "Disabled Firmware update Email notification"
 
 			if [ "$user_wanip_notification" = 0 ] && [ "$user_reboot_notification" = 0 ] && [ "$user_update_notification" = 0 ] && [ "$user_wanip_monitor" = 0 ] ; then
 				if [ "$2" != 'un' ] ; then
@@ -1943,7 +1942,7 @@ F_notify_wanip() {
 			else
 				F_replace_var user_wanip_notification 0 "$config_src"
 				user_wanip_notification=0
-				F_log_terminal_ok "Disabled WAN IP change Email notfication"
+				F_log_terminal_ok "Disabled WAN IP change Email notification"
 				return 0
 			fi
 		;;
@@ -3570,7 +3569,7 @@ F_compare() {
 		F_terminal_check_ok "WAN IP compare - Saved WAN IP   :  ${tGRN}${saved_wan_ip}${tCLR}"
 		[ "$run_option" = 'wancall' ] && F_log "Saved WAN IP matches current IP"   # verify wan-event checks
 		if F_printfstr "$current_wan_ip" | F_cgnat_ip ; then
-			F_terminal_fail "Notice - Your WAN IP ${current_wan_ip} appears to be a CGNAT address"
+			F_log_terminal_fail "Notice - Your WAN IP ${current_wan_ip} appears to be a CGNAT address"
 		fi
 		return 0
 	else

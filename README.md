@@ -76,7 +76,7 @@ Sendmail doesnt always return an error code on a misconfiguration so false
 send success can occur.  If script says Email has sent but no Email received
 use option L||l from the Main Menu to read sendmail output for errors.
 
-All messages sent to syslog are duplicated in 1
+All messages sent to syslog are duplicated in /jffs/addons/wicens/wicens.log
 Including failed Email curl logs - Use option Z||z to view wicens.log
 
 The script does not update its saved WAN IP until the script has completed
