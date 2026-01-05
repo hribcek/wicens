@@ -3145,7 +3145,7 @@ F_send_format_ssl() {
 		--upload-file "${mail_file}" \
 		--ssl-reqd \
 		--crlf \
-		--user "${user_login_addr}:${user_pswd}" "$ssl_flag"
+		--user "${user_login_addr}:${user_pswd}" "${ssl_flag}"
 	else
 		curl >> "${mail_log}" 2>&1 \
 		-v \
@@ -3155,7 +3155,7 @@ F_send_format_ssl() {
 		--upload-file "${mail_file}" \
 		--ssl-reqd \
 		--crlf \
-		--user "${user_login_addr}:${user_pswd}" "$ssl_flag"
+		--user "${user_login_addr}:${user_pswd}" "${ssl_flag}"
 	fi
 } # send_format_ssl
 
@@ -3194,7 +3194,7 @@ F_web_update_check() {
 
 	if [ -z "${git_version}" ] || [ -z "${server_md5}" ] ; then
 		kill "${child_pid}" > /dev/null 2>&1
-		printf '%b' "${tERASE}$tBACK${tERASE}"
+		printf '%b' "${tERASE}${tBACK}${tERASE}"
 		F_log_terminal_fail "Failed, could not read server script version or calc md5, aborting update check"
 		F_wait 10
 		return 1   # skip everything below
